@@ -8,6 +8,7 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class main {
+	static int total_score = 0;
 	
 	 public static long factorial(int number) {
 	        long result = 1;
@@ -47,9 +48,13 @@ public class main {
 	
 	public static List<Integer> servePizzas(List<Pizza> pizzas, int memberCount) {
 		List<Integer> sentPizzas = new ArrayList<>();
+		List<Pizza> toRemove = new ArrayList<>();
+		List<String> ingredients = new ArrayList<>();
+		List<String> local_ingredients = new ArrayList<>();
 		Random rand = new Random();
-		int selected = 0, maxScore = -1;
+		int maxScore = -1;
 		int[] maxPizzas = null;
+		int total = 0;
 
 		if(memberCount > pizzas.size())
 			return null;
@@ -59,9 +64,17 @@ public class main {
 		for(int i = 0; i < selection.size(); i++) {
 			int score = 0;
 			int[] p = selection.get(i);
+			local_ingredients = new ArrayList<>();
 					
 			for(int j = 0; j < p.length; j++) {
-				score += pizzas.get(p[j]).getScore();
+				//score += pizzas.get(p[j]).getScore();
+				
+				for(String s : pizzas.get(p[j]).getIngredients()) {
+					if(!local_ingredients.contains(s)) {
+						score++;
+						local_ingredients.add(s);
+					}
+				}
 			}
 			
 			if(score > maxScore) {
@@ -70,11 +83,22 @@ public class main {
 			}
 		}
 		
-		System.out.println(maxPizzas.length + " " + pizzas.size());
+		//System.out.println(maxPizzas.length + " " + pizzas.size());
 		for(int i = 0; i < maxPizzas.length; i++) {
-			sentPizzas.add(maxPizzas[i]);
+			sentPizzas.add(pizzas.get(maxPizzas[i]).getId());
+			
+			for(String s : pizzas.get(maxPizzas[i]).getIngredients()) {
+				if(!ingredients.contains(s)) {
+					total++;
+					ingredients.add(s);
+				}
+			}
+			
+			toRemove.add(pizzas.get(maxPizzas[i]));
 		}
 		
+		total_score += Math.pow(total, 2);
+		pizzas.removeAll(toRemove);
 		
 		return sentPizzas;
 	}
@@ -98,10 +122,9 @@ public class main {
 		boolean teamsLeft = true;
 		List<Pizza> pizzas = new ArrayList<>();
 		
-		
 		// Read
 		try {
-			File file = new File("D:\\Downloads\\a_example");
+			File file = new File("D:\\Downloads\\b_little_bit_of_everything.in");
 			File outputFile = new File("output.txt");
 			Scanner sc = new Scanner(file);
 			
@@ -178,6 +201,8 @@ public class main {
 					teamsLeft = false;
 			}
 			sc.close();	
+			
+			System.out.println("Total score: " + total_score);
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
