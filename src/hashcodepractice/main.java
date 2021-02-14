@@ -1,6 +1,7 @@
 package hashcodepractice;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -47,7 +48,7 @@ public class main {
 	}
 	
 	public static List<Integer> servePizzas(List<Pizza> pizzas, int memberCount) {
-		List<Integer> sentPizzas = new ArrayList<>();
+		List<Integer> sentPizzas = new ArrayList<>(); 
 		List<Pizza> toRemove = new ArrayList<>();
 		List<String> ingredients = new ArrayList<>();
 		List<String> local_ingredients = new ArrayList<>();
@@ -107,7 +108,6 @@ public class main {
 		Pizza pizza = new Pizza();
 		String[] d = data.split(" ");
 		
-		pizza.setScore(Integer.parseInt(d[0]));
 		pizza.setId(index);
 		
 		for(int i = 1; i < d.length; i++) {
@@ -118,14 +118,16 @@ public class main {
 	}
 
 	public static void main(String[] args) {
-		int lineCounter = 0, totalPizzasDelivered, totalPizzas, two_member_team = 0, three_member_team = 0, four_member_team = 0;
+		int lineCounter = 0, totalPizzasDelivered = 0, totalPizzas, two_member_team = 0, three_member_team = 0, four_member_team = 0;
 		boolean teamsLeft = true;
 		List<Pizza> pizzas = new ArrayList<>();
 		
 		// Read
 		try {
-			File file = new File("D:\\Downloads\\b_little_bit_of_everything.in");
-			File outputFile = new File("output.txt");
+			File file = new File("D:\\Downloads\\a_example");
+			FileWriter output = new FileWriter("output.txt");
+			StringBuilder pizzaData = new StringBuilder();
+			
 			Scanner sc = new Scanner(file);
 			
 			while(sc.hasNextLine()) {
@@ -153,10 +155,20 @@ public class main {
 				if(two_member_team > 0) {
 						
 					sentPizzas = servePizzas(pizzas, 2);
-					if(sentPizzas != null)
+//					if(sentPizzas != null)
+//						for(Integer o : sentPizzas) {
+//							System.out.println(o);
+//						}
+					if(sentPizzas != null) {
+						totalPizzasDelivered++;
+						pizzaData.append("2 ");
 						for(Integer o : sentPizzas) {
-							System.out.println(o);
+							pizzaData.append(o + " ");
 						}
+						pizzaData.deleteCharAt(pizzaData.length() - 1);
+						pizzaData.append("\n");
+					}
+					
 					
 					if((pizzas.size() - 2 > 0 && pizzas.size() - 2 < 2) && (pizzas.size() % 3 == 0 || pizzas.size() % 4 == 0))
 						two_member_team = 1;
@@ -169,10 +181,20 @@ public class main {
 				if(three_member_team > 0) {
 					
 					sentPizzas = servePizzas(pizzas, 3);
-					if(sentPizzas != null)
+//					if(sentPizzas != null)
+//						for(Integer o : sentPizzas) {
+//							System.out.println(o);
+//						}
+					
+					if(sentPizzas != null) {
+						totalPizzasDelivered++;
+						pizzaData.append("3 ");
 						for(Integer o : sentPizzas) {
-							System.out.println(o);
+							pizzaData.append(o + " ");
 						}
+						pizzaData.deleteCharAt(pizzaData.length() - 1);
+						pizzaData.append("\n");
+					}
 					
 					if((pizzas.size() - 3 > 0 && pizzas.size() - 3 < 3) && (pizzas.size() % 2 == 0 || pizzas.size() % 4 == 0))
 						three_member_team = 1;
@@ -185,10 +207,20 @@ public class main {
 				if(four_member_team > 0) {
 					
 					sentPizzas = servePizzas(pizzas, 4);
-					if(sentPizzas != null)
+//					if(sentPizzas != null)
+//						for(Integer o : sentPizzas) {
+//							System.out.println(o);
+//						}
+					
+					if(sentPizzas != null) {
+						totalPizzasDelivered++;
+						pizzaData.append("4 ");
 						for(Integer o : sentPizzas) {
-							System.out.println(o);
+							pizzaData.append(o + " ");
 						}
+						pizzaData.deleteCharAt(pizzaData.length() - 1);
+						pizzaData.append("\n");
+					}
 					
 					if((pizzas.size() - 4 > 0 && pizzas.size() - 4 < 4) && (pizzas.size() % 2 == 0 || pizzas.size() % 3 == 0))
 						four_member_team = 1;
@@ -201,6 +233,11 @@ public class main {
 					teamsLeft = false;
 			}
 			sc.close();	
+			pizzaData.deleteCharAt(pizzaData.length() - 1);
+			System.out.println(pizzaData);
+			
+			output.write(totalPizzasDelivered + "\n" + pizzaData);
+			output.close();
 			
 			System.out.println("Total score: " + total_score);
 		}catch(Exception e) {
