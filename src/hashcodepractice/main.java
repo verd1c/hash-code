@@ -10,7 +10,7 @@ import java.util.Scanner;
 
 public class main {
 	static int total_score = 0;
-	//static int max_tries = 562841;
+	static int max_tries = 1000;
 	
 	 public static long factorial(int number) {
 	        long result = 1;
@@ -41,37 +41,37 @@ public class main {
 		        maxPizzas = combination.clone();
 		    }
 
-//		    while (combination[r - 1] < n && count++ < max_tries) {
-//		        //combinations.add(combination.clone());
-//		    	int score = 0;
-//				local_ingredients = new ArrayList<>();
-//						
-//				for(int j = 0; j < combination.length; j++) {
-//					//score += pizzas.get(p[j]).getScore();
-//					
-//					for(String s : pizzas.get(combination[j]).getIngredients()) {
-//						if(!local_ingredients.contains(s)) {
-//							score++;
-//							local_ingredients.add(s);
-//						}
-//					}
-//				}
-//				
-//				if(score > maxScore) {
-//					maxScore = score;
-//					maxPizzas = combination.clone();
-//				}
-//
-//		         // generate next combination in lexicographic order
-//		        int t = r - 1;
-//		        while (t != 0 && combination[t] == n - r + t) {
-//		            t--;
-//		        }
-//		        combination[t]++;
-//		        for (int i = t + 1; i < r; i++) {
-//		            combination[i] = combination[i - 1] + 1;
-//		        }
-//		    }
+		    while (combination[r - 1] < n && count++ < max_tries) {
+		        //combinations.add(combination.clone());
+		    	int score = 0;
+				local_ingredients = new ArrayList<>();
+						
+				for(int j = 0; j < combination.length; j++) {
+					//score += pizzas.get(p[j]).getScore();
+					
+					for(String s : pizzas.get(combination[j]).getIngredients()) {
+						if(!local_ingredients.contains(s)) {
+							score++;
+							local_ingredients.add(s);
+						}
+					}
+				}
+				
+				if(score > maxScore) {
+					maxScore = score;
+					maxPizzas = combination.clone();
+				}
+
+		         // generate next combination in lexicographic order
+		        int t = r - 1;
+		        while (t != 0 && combination[t] == n - r + t) {
+		            t--;
+		        }
+		        combination[t]++;
+		        for (int i = t + 1; i < r; i++) {
+		            combination[i] = combination[i - 1] + 1;
+		        }
+		    }
 
 		    return maxPizzas;
 	}
@@ -93,7 +93,7 @@ public class main {
 			return null;
 		
 		
-		//maxPizzas = generate(pizzas.size(), memberCount, pizzas);
+		maxPizzas = generate(pizzas.size(), memberCount, pizzas);
 //		for(int i = 0; i < selection.size(); i++) {
 //			int score = 0;
 //			int[] p = selection.get(i);
@@ -116,14 +116,14 @@ public class main {
 //			}
 //		}
 		
-		for (int i = 0; i < memberCount; i++) {
-			int myRandom = rand.nextInt(pizzas.size());
-			while(usedRandoms.contains(myRandom)) {
-				myRandom = rand.nextInt(pizzas.size());
-			}
-			usedRandoms.add(myRandom);
-	        maxPizzas[i] = myRandom;
-	    }
+//		for (int i = 0; i < memberCount; i++) {
+//			int myRandom = rand.nextInt(pizzas.size());
+//			while(usedRandoms.contains(myRandom)) {
+//				myRandom = rand.nextInt(pizzas.size());
+//			}
+//			usedRandoms.add(myRandom);
+//	        maxPizzas[i] = myRandom;
+//	    }
 		
 		//System.out.println(maxPizzas.length + " " + pizzas.size());
 		for(int i = 0; i < maxPizzas.length; i++) {
