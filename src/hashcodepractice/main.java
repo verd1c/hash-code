@@ -2,25 +2,24 @@ package hashcodepractice;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.stream.LongStream;
 
 public class main {
 	static int total_score = 0;
-	static int max_tries = 1000;
+	static long max_tries = 0;
 	
-	 public static long factorial(int number) {
-	        long result = 1;
-
-	        for (int factor = 2; factor <= number; factor++) {
-	            result *= factor;
-	        }
-
-	        return result;
-	 }
+	public static BigInteger factorial(int n) {
+	    BigInteger result = BigInteger.ONE;
+	    for (int i = 2; i <= n; i++)
+	        result = result.multiply(BigInteger.valueOf(i));
+	    return result;
+	}
 	 
 	 public static int[] generate(int n, int r, List<Pizza> pizzas) {
 		    List<int[]> combinations = new ArrayList<>();
@@ -29,6 +28,7 @@ public class main {
 			List<Pizza> toRemove = new ArrayList<>();
 			List<String> ingredients = new ArrayList<>();
 			List<String> local_ingredients = new ArrayList<>();
+			List<Integer> reverse = new ArrayList<>();
 			Random rand = new Random();
 		    int count = 0;
 			int maxScore = -1;
@@ -72,6 +72,45 @@ public class main {
 		            combination[i] = combination[i - 1] + 1;
 		        }
 		    }
+		    
+//		    count = 0;
+//		    while (combination[r - 1] < n && count++ < max_tries/2) {
+//		        //combinations.add(combination.clone());
+//		    	int score = 0;
+//				local_ingredients = new ArrayList<>();
+//				reverse.clear();	
+//				
+//				// Create reverse
+//				for(int j = 0; j < combination.length; j++)
+//					reverse.add(pizzas.size() - 1 - combination[j]);
+//				
+//				for(int j = 0; j < reverse.size(); j++) {
+//					//score += pizzas.get(p[j]).getScore();
+//					
+//					for(String s : pizzas.get(reverse.get(j)).getIngredients()) {
+//						if(!local_ingredients.contains(s)) {
+//							score++;
+//							local_ingredients.add(s);
+//						}
+//					}
+//				}
+//				
+//				if(score > maxScore) {
+//					maxScore = score;
+//					for(int j = 0; j < reverse.size(); j++)
+//						maxPizzas[j] = reverse.get(j);
+//				}
+//
+//		         // generate next combination in lexicographic order
+//		        int t = r - 1;
+//		        while (t != 0 && combination[t] == n - r + t) {
+//		            t--;
+//		        }
+//		        combination[t]++;
+//		        for (int i = t + 1; i < r; i++) {
+//		            combination[i] = combination[i - 1] + 1;
+//		        }
+//		    }
 
 		    return maxPizzas;
 	}
@@ -159,13 +198,14 @@ public class main {
 	}
 
 	public static void main(String[] args) {
-		int lineCounter = 0, totalPizzasDelivered = 0, totalPizzas, two_member_team = 0, three_member_team = 0, four_member_team = 0;
+		int lineCounter = 0, totalPizzasDelivered = 0, totalPizzas = 0, two_member_team = 0, three_member_team = 0, four_member_team = 0;
 		boolean teamsLeft = true;
 		List<Pizza> pizzas = new ArrayList<>();
+		int oldTeamMembers = 0, teamMembers = 0;
 		
 		// Read
 		try {
-			File file = new File("D:\\Downloads\\d_many_pizzas.in");
+			File file = new File("D:\\Downloads\\c_many_ingredients.in");
 			FileWriter output = new FileWriter("output.txt");
 			StringBuilder pizzaData = new StringBuilder();
 			
@@ -189,14 +229,21 @@ public class main {
 				
 			}
 			
+			max_tries = totalPizzas;
+			
 			while(teamsLeft) {
 				List<Integer> sentPizzas = null;
 				System.out.println("2: " + two_member_team + " 3: " + three_member_team + " 4: " + four_member_team);
 				
 				// Serve two member team
 				if(two_member_team > 0) {
-						
+					teamMembers = 2;
+					
+//					if(teamMembers != oldTeamMembers)
+//						max_tries = factorial(totalPizzas).divide((factorial(2).multiply(factorial(totalPizzas - 2)))).longValue() / (totalPizzas*totalPizzas);
+					
 					sentPizzas = servePizzas(pizzas, 2);
+					oldTeamMembers = 2;
 //					if(sentPizzas != null)
 //						for(Integer o : sentPizzas) {
 //							System.out.println(o);
@@ -221,8 +268,14 @@ public class main {
 				
 				// Serve three member team
 				if(three_member_team > 0) {
+					teamMembers = 3;
 					
+//					if(teamMembers != oldTeamMembers)
+//						max_tries = factorial(totalPizzas).divide((factorial(3).multiply(factorial(totalPizzas - 3)))).longValue() / (totalPizzas*totalPizzas);
+					
+					System.out.println("Calculated factorial");
 					sentPizzas = servePizzas(pizzas, 3);
+					oldTeamMembers = 3;
 //					if(sentPizzas != null)
 //						for(Integer o : sentPizzas) {
 //							System.out.println(o);
@@ -247,8 +300,13 @@ public class main {
 				
 				// Serve four member team
 				if(four_member_team > 0) {
+					teamMembers = 4;
+					
+//					if(teamMembers != oldTeamMembers)
+//						max_tries = factorial(totalPizzas).divide((factorial(4).multiply(factorial(totalPizzas - 4)))).longValue() / (totalPizzas*totalPizzas);
 					
 					sentPizzas = servePizzas(pizzas, 4);
+					oldTeamMembers = 4;
 //					if(sentPizzas != null)
 //						for(Integer o : sentPizzas) {
 //							System.out.println(o);
